@@ -1,4 +1,5 @@
 # data managenent
+openpyxl
 pandas
 
 # testing
