@@ -3,3 +3,6 @@ pandas
 
 # testing
 pytest
+
+# notebook
+jupyter
