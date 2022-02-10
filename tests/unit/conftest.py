@@ -1,13 +1,6 @@
 import pytest
-import pandas as pd
 
 
 @pytest.fixture(scope="session")
-def mock_dataset():
-    data = {
-        "name": ['bob dylan', 'dan chiriac', 'joachim K. pastor'],
-        "tag1": ['good', 'bad', 'evil'],
-        "tag2": ['cringe', 'based', '']
-    }
-
-    return pd.DataFrame(data)
+def mock_data_path() -> str:
+    return '../test_data/mock_data.xlsx'

@@ -8,35 +8,38 @@ class DatasetTransformerPipeline:
     """
         Manipulates data columns form inserted dataframe.
     """
-    def __init__(self, dataset: pd.DataFrame) -> None:
+
+    def __init__(self, file_path: str, names_column: str, columns: List[str]) -> None:
         """
             Uses inserted dataset for the next methods;
-            :param dataset: usually a csv table that will be changed in pd.Dataframe.
+            :param file_path: path to usually a csv table that will be changed in pd.Dataframe.
         """
-        self.dataset = dataset
+        self.file_path = file_path
+        self.names_column = names_column
+        self.columns = columns
 
-    def stack_tags_columns(self, columns: List[str], tags_column_name: str) -> pd.DataFrame:
+        self.dataset = pd.read_excel(self.file_path, index_col=0)
+        self.tags_column_name = self.tags_column_name = 'Tags'
+        self.first_name_column = self.first_name_column = "first_name"
+        self.last_name_column = self.last_name_column = "last_name"
+        self.names_column_split_length = self.names_column_split_length = 'full_name_split_length'
+
+    def stack_tags_columns(self) -> pd.DataFrame:
         """
             Uses data from needed columns to stack their data into one column
             that will be named by the user;
-            :param columns: the list of columns that will be eventually stack
-            :param tags_column_name: the name of the column where those columns' data will be transferred.
-
             :return: transformed dataframe with new tag columns
         """
-        for column in columns:
-            self.dataset[column] = self.dataset[column].replace(['WAHR', False], [column, ''])
-        self.dataset[tags_column_name] = self.dataset[columns].agg(', '.join, axis=1)
-        self.dataset[tags_column_name] = self.dataset[tags_column_name].str.split(', ')
-        self.dataset[tags_column_name] = [list(filter(None, tag)) for tag in self.dataset[tags_column_name]]
-        self.dataset.drop(columns, axis=1, inplace=True)
+        for column in self.columns:
+            self.dataset[column] = self.dataset[column].replace(['WAHR', False, 'FALSCH'], [column, '', ''])
+        self.dataset[self.tags_column_name] = self.dataset[self.columns].agg(', '.join, axis=1)
+        self.dataset[self.tags_column_name] = self.dataset[self.tags_column_name].str.split(', ')
+        self.dataset[self.tags_column_name] = [list(filter(None, tag)) for tag in self.dataset[self.tags_column_name]]
+        self.dataset.drop(self.columns, axis=1, inplace=True)
 
         return self.dataset
 
-    def split_names(self, names_column: str,
-                    first_name_column: str = "first_name",
-                    last_name_columns: str = "last_name",
-                    names_column_split_length: str = 'full_name_split_length') -> pd.DataFrame:
+    def split_names(self) -> pd.DataFrame:
         """
             Separates column name into two different column for first and last name
         :param names_column: column with names that will be split
@@ -45,14 +48,22 @@ class DatasetTransformerPipeline:
         :param names_column_split_length: how many words has the name
         :return: aggregated dataset with split names' column.
         """
-        self.dataset[names_column_split_length] = self.dataset[names_column].str.split().str.len()
+        self.dataset[self.names_column_split_length] = self.dataset[self.names_column].str.split().str.len()
 
-        self.dataset[first_name_column] = self.dataset[last_name_columns] = ''
+        self.dataset[self.first_name_column] = self.dataset[self.last_name_column] = ''
 
-        self.dataset.loc[self.dataset[names_column_split_length] >= 1, first_name_column] = \
-            self.dataset.loc[self.dataset[names_column_split_length] >= 1][names_column].str.split().str[0]
+        self.dataset.loc[self.dataset[self.names_column_split_length] >= 1, self.first_name_column] = \
+            self.dataset.loc[self.dataset[self.names_column_split_length] >= 1][self.names_column].str.split().str[0]
 
-        self.dataset.loc[self.dataset[names_column_split_length] >= 2, last_name_columns] = self.dataset.loc[
-            self.dataset[names_column_split_length] >= 2][names_column].str.split().str[-1]
+        self.dataset.loc[self.dataset[self.names_column_split_length] >= 2, self.last_name_column] = self.dataset.loc[
+            self.dataset[self.names_column_split_length] >= 2][self.names_column].str.split().str[-1]
+
+        self.dataset.drop([self.names_column_split_length], axis=1, inplace=True)
+
+        return self.dataset
+
+    def execute(self):
+        self.stack_tags_columns()
+        self.split_names()
 
         return self.dataset
