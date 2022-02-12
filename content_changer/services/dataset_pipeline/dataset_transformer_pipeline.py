@@ -8,11 +8,12 @@ class DatasetTransformerPipeline:
     """
         Manipulates data columns form inserted dataframe.
     """
-
     def __init__(self, file_path: str, names_column: str, columns: List[str]) -> None:
         """
             Uses inserted dataset for the next methods;
-            :param file_path: path to usually a csv table that will be changed in pd.Dataframe.
+            :param file_path: path to usually a csv table that will be changed in pd.Dataframe
+            :param names_column: column with names that will be split
+            :param columns: Tags of the inserted dataset that eventually be stack in one column
         """
         self.file_path = file_path
         self.names_column = names_column
@@ -26,8 +27,7 @@ class DatasetTransformerPipeline:
 
     def stack_tags_columns(self) -> pd.DataFrame:
         """
-            Uses data from needed columns to stack their data into one column
-            that will be named by the user;
+            Uses data from needed columns to stack their data into one column that will be named by the user;
             :return: transformed dataframe with new tag columns
         """
         for column in self.columns:
@@ -42,14 +42,9 @@ class DatasetTransformerPipeline:
     def split_names(self) -> pd.DataFrame:
         """
             Separates column name into two different column for first and last name
-        :param names_column: column with names that will be split
-        :param first_name_column: name of column with first name
-        :param last_name_columns: name of column with last name
-        :param names_column_split_length: how many words has the name
-        :return: aggregated dataset with split names' column.
+            :return: aggregated dataset with split names' column.
         """
         self.dataset[self.names_column_split_length] = self.dataset[self.names_column].str.split().str.len()
-
         self.dataset[self.first_name_column] = self.dataset[self.last_name_column] = ''
 
         self.dataset.loc[self.dataset[self.names_column_split_length] >= 1, self.first_name_column] = \
@@ -61,6 +56,12 @@ class DatasetTransformerPipeline:
         self.dataset.drop([self.names_column_split_length], axis=1, inplace=True)
 
         return self.dataset
+
+    def save_transformed_dataset(self) -> pd.DataFrame:
+        """
+            After executed steps, new dataset should be saved somewhere on the machine
+            :return: saved dataframe
+        """
 
     def execute(self):
         self.stack_tags_columns()

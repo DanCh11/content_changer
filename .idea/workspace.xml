@@ -28,7 +28,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.notebooks.jupyter.connections.configuration.JupyterServerConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -84,7 +84,10 @@
       <updated>1644423764039</updated>
       <workItem from="1644423765755" duration="1136000" />
       <workItem from="1644427500936" duration="18594000" />
-      <workItem from="1644524289254" duration="3034000" />
+      <workItem from="1644524289254" duration="3276000" />
+      <workItem from="1644589631265" duration="130000" />
+      <workItem from="1644589773938" duration="5943000" />
+      <workItem from="1644701877231" duration="568000" />
     </task>
     <servers />
   </component>
