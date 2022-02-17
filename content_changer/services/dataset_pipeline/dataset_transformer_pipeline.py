@@ -8,17 +8,15 @@ class DatasetTransformerPipeline:
     """
         Manipulates data columns form inserted dataframe.
     """
-    def __init__(self, file_path: str, names_column: str, columns: List[str]) -> None:
+    def __init__(self, file_path: str) -> None:
         """
             Uses inserted dataset for the next methods;
             :param file_path: path to usually a csv table that will be changed in pd.Dataframe
-            :param names_column: column with names that will be split
-            :param columns: Tags of the inserted dataset that eventually be stack in one column
         """
         self.file_path = file_path
-        self.names_column = names_column
-        self.columns = columns
 
+        self.names_column = 'Ansprechpartner'
+        self.tag_columns_columns = ['Makler', 'Verwalter', 'Projektentwickler']
         self.dataset = pd.read_excel(self.file_path, index_col=0)
         self.tags_column_name = self.tags_column_name = 'Tags'
         self.first_name_column = self.first_name_column = "first_name"
@@ -30,12 +28,12 @@ class DatasetTransformerPipeline:
             Uses data from needed columns to stack their data into one column that will be named by the user;
             :return: transformed dataframe with new tag columns
         """
-        for column in self.columns:
-            self.dataset[column] = self.dataset[column].replace(['WAHR', False, 'FALSCH'], [column, '', ''])
-        self.dataset[self.tags_column_name] = self.dataset[self.columns].agg(', '.join, axis=1)
+        for tag_column in self.tag_columns_columns:
+            self.dataset[tag_column] = self.dataset[tag_column].replace(['WAHR', False, 'FALSCH'], [tag_column, '', ''])
+        self.dataset[self.tags_column_name] = self.dataset[self.tag_columns_columns].agg(', '.join, axis=1)
         self.dataset[self.tags_column_name] = self.dataset[self.tags_column_name].str.split(', ')
         self.dataset[self.tags_column_name] = [list(filter(None, tag)) for tag in self.dataset[self.tags_column_name]]
-        self.dataset.drop(self.columns, axis=1, inplace=True)
+        self.dataset.drop(self.tag_columns_columns, axis=1, inplace=True)
 
         return self.dataset
 

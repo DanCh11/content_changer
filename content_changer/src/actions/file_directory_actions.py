@@ -1,4 +1,7 @@
 from tkinter import filedialog
+import pandas as pd
+
+from content_changer.services.dataset_pipeline.dataset_transformer_pipeline import DatasetTransformerPipeline
 
 
 def extract_excel_file_from_explorer(initial_directory: str = "/",
@@ -8,7 +11,7 @@ def extract_excel_file_from_explorer(initial_directory: str = "/",
                                      all_files: str = "all files",
                                      all_files_format: str = "*.*") -> filedialog:
     """
-        This function opens OS file explorer and gives ability to user to select for the excel file from his storage.
+        This function opens OS file explorer and gives ability to user to select for the excel file from his storage
     :param initial_directory: displayed directory at popping up the file explorer
     :param title: title of the file explorer dialog
     :param filetype_name: filter's name of what files will be shown
@@ -18,5 +21,18 @@ def extract_excel_file_from_explorer(initial_directory: str = "/",
 
     :return: dialog with file explorer
     """
-    return filedialog.askopenfile(initialdir=initial_directory, title=title,
-                                  filetypes=((filetype_name, filetype_format), (all_files, all_files_format)))
+    return filedialog.askopenfilename(initialdir=initial_directory, title=title,
+                                      filetypes=((filetype_name, filetype_format), (all_files, all_files_format)))
+
+
+def execute_transform_pipeline(file_path: str):
+    if file_path.endswith(".excel"):
+        dataset = pd.read_excel(file_path, index_col=0)
+    else:
+        dataset = pd.read_csv(file_path)
+
+    return DatasetTransformerPipeline(dataset).execute()
+
+
+
+
