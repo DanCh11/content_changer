@@ -1,6 +1,6 @@
 import pandas as pd
 
-from content_changer.services.dataset_pipeline.dataset_transformer_pipeline import DatasetTransformerPipeline
+from content_changer.services.dataset_pipeline.dataset_modifier_pipeline import DatasetTransformerPipeline
 
 
 def test_table_modifier(mock_data_path):

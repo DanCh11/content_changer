@@ -4,7 +4,7 @@ from typing import List
 import pandas as pd
 
 
-class DatasetTransformerPipeline:
+class DatasetModifierPipeline:
     """
         Manipulates data columns form inserted dataframe.
     """
