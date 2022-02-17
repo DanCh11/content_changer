@@ -1,7 +1,7 @@
 from tkinter import filedialog
 import pandas as pd
 
-from content_changer.services.dataset_pipeline.dataset_modifier_pipeline import DatasetTransformerPipeline
+from content_changer.services.dataset_pipeline.dataset_modifier_pipeline import DatasetModifierPipeline
 
 
 def extract_excel_file_from_explorer(initial_directory: str = "/",
@@ -31,7 +31,7 @@ def execute_transform_pipeline(file_path: str):
     else:
         dataset = pd.read_csv(file_path)
 
-    return DatasetTransformerPipeline(dataset).execute()
+    return DatasetModifierPipeline(dataset).execute()
 
 
 
