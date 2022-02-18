@@ -25,14 +25,10 @@ def extract_excel_file_from_explorer(initial_directory: str = "/",
                                       filetypes=((filetype_name, filetype_format), (all_files, all_files_format)))
 
 
-def execute_transform_pipeline(file_path: str):
-    if file_path.endswith(".excel"):
-        dataset = pd.read_excel(file_path, index_col=0)
-    else:
-        dataset = pd.read_csv(file_path)
+def execute_transform_pipeline():
 
-    return DatasetModifierPipeline(dataset).execute()
-
+    extract = extract_excel_file_from_explorer()
+    return DatasetModifierPipeline(extract).execute()
 
 
 
