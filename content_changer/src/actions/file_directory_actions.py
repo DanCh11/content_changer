@@ -1,5 +1,4 @@
 from tkinter import filedialog
-import pandas as pd
 
 from content_changer.services.dataset_pipeline.dataset_modifier_pipeline import DatasetModifierPipeline
 

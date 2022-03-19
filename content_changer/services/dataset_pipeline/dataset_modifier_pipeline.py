@@ -1,6 +1,3 @@
-
-from typing import List
-
 import pandas as pd
 
 
@@ -14,7 +11,7 @@ class DatasetModifierPipeline:
             :param file_path: path to usually a csv table that will be changed in pd.Dataframe
         """
         self.file_path = file_path
-
+        self.filename = "modified.xlsx"
         self.names_column = 'Ansprechpartner'
         self.tag_columns_columns = ['Makler', 'Verwalter', 'Projektentwickler']
         self.dataset = pd.read_excel(self.file_path, index_col=0)
@@ -55,14 +52,12 @@ class DatasetModifierPipeline:
 
         return self.dataset
 
-    def save_transformed_dataset(self) -> pd.DataFrame:
-        """
-            After executed steps, new dataset should be saved somewhere on the machine
-            :return: saved dataframe
-        """
+    def save_modified_file(self):
+        return self.dataset.to_excel(self.filename)
 
     def execute(self):
         self.stack_tags_columns()
         self.split_names()
+        self.save_modified_file()
 
         return self.dataset
