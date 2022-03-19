@@ -52,12 +52,12 @@ class DatasetModifierPipeline:
 
         return self.dataset
 
-    def save_modified_file(self):
-        return self.dataset.to_excel(self.filename)
+    # def save_modified_file(self):
+    #     return self.dataset.to_excel(self.filename)
 
     def execute(self):
         self.stack_tags_columns()
         self.split_names()
-        self.save_modified_file()
+        # self.save_modified_file()
 
         return self.dataset
