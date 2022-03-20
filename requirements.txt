@@ -7,3 +7,7 @@ pytest
 
 # notebook
 jupyter
+
+# py to exe
+pyinstaller
+auto-pt-to-exe
