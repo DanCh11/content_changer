@@ -1,7 +1,7 @@
 import tkinter as tk
 
 
-def create_app_canvas(root: tk.Tk, height: int = 400, width: int = 400) -> tk:
+def create_app_canvas(root: tk.Tk, height: int = 100, width: int = 150) -> tk:
     """
         This function creates the canvas and manages the height and width of the app window
         :param root: tk app
