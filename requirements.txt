@@ -10,4 +10,4 @@ jupyter
 
 # py to exe
 pyinstaller
-auto-pt-to-exe
+auto-py-to-exe
