@@ -5,6 +5,7 @@ class DatasetModifierPipeline:
     """
         Manipulates data columns form inserted dataframe.
     """
+
     def __init__(self, file_path: str) -> None:
         """
             Uses inserted dataset for the next methods;
@@ -26,7 +27,8 @@ class DatasetModifierPipeline:
             :return: transformed dataframe with new tag columns
         """
         for tag_column in self.tag_columns_columns:
-            self.dataset[tag_column] = self.dataset[tag_column].replace(['WAHR', False, 'FALSCH'], [tag_column, '', ''])
+            self.dataset[tag_column].replace("FALSCH", False)
+            self.dataset[tag_column] = self.dataset[tag_column].replace(['WAHR', False, True], [tag_column, '', ''])
         self.dataset[self.tags_column_name] = self.dataset[self.tag_columns_columns].agg(', '.join, axis=1)
         self.dataset[self.tags_column_name] = self.dataset[self.tags_column_name].str.split(', ')
         self.dataset[self.tags_column_name] = [list(filter(None, tag)) for tag in self.dataset[self.tags_column_name]]
